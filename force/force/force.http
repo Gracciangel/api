@@ -1,0 +1,6 @@
+@force_HostAddress = http://localhost:8000
+
+GET {{force_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

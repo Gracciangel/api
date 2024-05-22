@@ -1,0 +1,4 @@
+[*.cs]
+
+# IDE0008: Usar un tipo explícito
+csharp_style_var_elsewhere = true
