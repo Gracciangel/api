@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\force",
+    "\\force\\force",
+    "\\force\\force\\Controllers",
+    "\\force\\force\\Interfaces",
+    "\\force\\force\\Repository"
+  ],
+  "SelectedNode": "\\force\\force\\Program.cs",
+  "PreviewInSolutionExplorer": false
+}
