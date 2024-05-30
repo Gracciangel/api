@@ -31,7 +31,8 @@ namespace force.Interfaces
       Task<int>DeleteTeams(); 
    
       Task<int> GetPartida(int partida) ;
-      Task<int>ChangeStateTeam(int partida, [FromBody] Team team); 
+      Task<int> GetPartidaState(int partida) ;
+      Task<int>ChangeStateTeam(int partida, string team ); 
       Task<int> ChangeStatePartida(int partida, int state) ; 
 
       Task<IEnumerable<Team>> GetStateTeam(); 

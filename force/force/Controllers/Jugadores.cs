@@ -63,6 +63,11 @@ namespace force.Controllers
             return Ok(await _context.GetPlayers()) ;
         }
         
+        [HttpGet("partida/state")]
+        public async Task<IActionResult> GetPartidaState(int partida){
+            return Ok(await _context.GetPartidaState(partida));
+        }
+
          [HttpPost("jugadores/new")]
 
         public async Task<IActionResult> AddJugador([FromBody] JugadorDto jugador)
@@ -118,9 +123,10 @@ namespace force.Controllers
         }
 
         [HttpPut("team/state")]
-        public async Task<IActionResult> ChangeStateTeam(int partida, [FromBody] Team team){
-            return Ok(await _context.ChangeStateTeam(partida, team)) ;
-        }
+       public async Task<IActionResult> ChangeSateTeam(int partida, string team){
+        return Ok(await _context.ChangeStateTeam(partida, team)) ; 
+       }
+
         [HttpPut("partida/state")]
         public async Task<IActionResult> ChangeStatePartida(int partida , int state){
             

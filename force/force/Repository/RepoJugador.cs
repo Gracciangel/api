@@ -403,46 +403,7 @@ namespace force.Repository
             }
         }
 
-        public async Task<int> ChangeStateTeam(int partida, [FromBody] Team team)
-        {
-            using (var connection = GetConnection())
-            {
-
-                await connection.OpenAsync();
-
-                using (var transaction = connection.BeginTransaction())
-                {
-                    try
-                    {
-                        var partidaId = await GetPartida(partida);
-                        var sql = $@"UPDATE TEAM_{team.TEAM}
-                                SET COMPLETE = TRUE 
-                             WHERE PARTIDA_ID = {partidaId};";
-                        await connection.ExecuteAsync(sql, new
-                        {
-                            team.TEAM,
-                            team.COMPLETE,
-                            team.NICK_1,
-                            team.NICK_2,
-                            team.NICK_3,
-                            team.NICK_4,
-                            team.NICK_5,
-                            PARTIDA_ID = partidaId
-                        });
-
-                        transaction.Commit();
-                        return 1;
-
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        Console.WriteLine("los nick no pudieron ser actualzados \n" + ex.Message);
-                        return 0;
-                    }
-                }
-            }
-        }
+      
        public async Task<int> ChangeStatePartida(int partida, int state)
 {
     try
@@ -575,11 +536,70 @@ namespace force.Repository
         }
     }
         }
+
+        public async Task<int> ChangeStateTeam(int partida, string team)
+        {
+             using (var connection = GetConnection())
+            {
+
+                await connection.OpenAsync();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var partidaId = await GetPartida(partida);
+                        var sql = $@"UPDATE TEAM_{team}
+                                SET COMPLETE = TRUE 
+                             WHERE PARTIDA_ID = {partidaId};";
+                        await connection.ExecuteAsync(sql, new
+                        {
+                            team, 
+                            PARTIDA_ID = partidaId
+                        });
+
+                        transaction.Commit();
+                        return 1;
+
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        Console.WriteLine("los nick no pudieron ser actualzados \n" + ex.Message);
+                        return 0;
+                    }
+                }
+            }
+        }
+
+        public async Task<int> GetPartidaState(int partida)
+        {
+           try{
+             using(var connection = GetConnection())
+            {
+                await connection.OpenAsync(); 
+
+                using(var transaction = connection.BeginTransaction()) {
+                    var sqlGeStatePartida = $@"
+                        SELECT STATE FROM `vr_partida` WHERE vr_partida.ID_PARTIDA = @partida;
+                    " ;
+                var result = await connection.QueryFirstOrDefaultAsync<int>(sqlGeStatePartida, new{partida}) ; 
+                transaction.Commit() ;
+                return result ;
+                
+                }
+                
+            }
+           }
+           catch(Exception ex){
+            Console.WriteLine($"error al obtener el estado de la patida {partida}\n{ex.Message}") ; 
+            return 0 ; 
+           }
+        }
     }
 }
 
 
 
 
-
-
+  
